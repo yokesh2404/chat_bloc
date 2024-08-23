@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "478231749796",
+    "project_id": "chat-bloc-b2471",
+    "storage_bucket": "chat-bloc-b2471.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478231749796:android:f0b7c004b12082233bf231",
+        "android_client_info": {
+          "package_name": "com.chatappbloc.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfGWsRoQmwd-I84DtafgMk0nOdvw_qz40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
