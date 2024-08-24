@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:state_management/components/app_text_field.dart';
+import 'package:state_management/di.dart';
 import 'package:state_management/repositories/firebase_repo/firebase_repo.dart';
 import 'package:state_management/screens/login/bloc/login_bloc.dart';
 import 'package:state_management/utils/contants/app_colors.dart';
@@ -11,6 +12,7 @@ import 'package:state_management/utils/contants/app_strings.dart';
 import 'package:state_management/utils/helper/functions_helper.dart';
 import 'package:state_management/utils/helper/navigation_helper.dart';
 import 'package:state_management/utils/helper/route_helper.dart';
+import 'package:state_management/utils/helper/shared_pref_controller.dart';
 import 'package:state_management/widgets/button_widget.dart';
 import 'package:state_management/widgets/gradient_widget.dart';
 
@@ -165,55 +167,6 @@ class _LogInScreenState extends State<LogInScreen> {
                             buttonText: AppStrings.login),
                         const SizedBox(height: 20),
                         Row(
-                          children: [
-                            Expanded(
-                                child: Divider(color: Colors.grey.shade400)),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                AppStrings.orLoginWith,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: Colors.black,
-                                    ),
-                              ),
-                            ),
-                            Expanded(
-                                child: Divider(color: Colors.grey.shade400)),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: () {},
-                                icon: SvgPicture.asset(AppImages.googleSvg,
-                                    width: 14),
-                                label: const Text(
-                                  AppStrings.google,
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: () {},
-                                icon: SvgPicture.asset(AppImages.facebookSvg,
-                                    width: 14),
-                                label: const Text(
-                                  AppStrings.facebook,
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
@@ -239,42 +192,6 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
               ],
             );
-            // final bloc = context.read<LoginBloc>();
-            // if (state is LoadingState) {
-            //   return const Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // }
-
-            // return SingleChildScrollView(
-            //   padding: const EdgeInsets.all(12),
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: [
-            //       const Text("Log in"),
-            //       const SizedBox(
-            //         height: 12,
-            //       ),
-            // ,
-            //       const SizedBox(
-            //         height: 24,
-            //       ),
-            //       MaterialButton(
-            //         onPressed: () {
-            //           if (loginFormKey.currentState!.validate()) {
-            //             loginFormKey.currentState!.save();
-            //             context.read<LoginBloc>().add(SumbitLogin(
-            //                 email: emailController.text,
-            //                 password: passController.text));
-            //           }
-            //         },
-            //         color: Colors.green,
-            //         child: Text("Submit"),
-            //       )
-            //     ],
-            //   ),
-            // );
           },
         ),
       ),

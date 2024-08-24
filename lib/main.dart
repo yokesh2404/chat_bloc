@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:state_management/di.dart';
 import 'package:state_management/route.dart';
 
 import 'package:state_management/utils/helper/navigation_helper.dart';
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  DependencyInjection().init();
   runApp(const MyApp());
 }
 
@@ -29,6 +31,6 @@ class MyApp extends StatelessWidget {
         navigatorKey: NavigationHelper.key,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: (settings) => Routes.generateRoute(settings),
-        initialRoute: RouteHelper.login);
+        initialRoute: RouteHelper.splash);
   }
 }

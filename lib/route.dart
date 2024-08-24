@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:state_management/screens/home/view/home_screen.dart';
 import 'package:state_management/screens/login/view/log_in_screen.dart';
 import 'package:state_management/screens/register/view/register_screen.dart';
+import 'package:state_management/screens/splash/view/splash_screen.dart';
 import 'package:state_management/utils/helper/route_helper.dart';
 
 class Routes {
@@ -20,6 +21,8 @@ class Routes {
     }
 
     switch (settings.name) {
+      case RouteHelper.splash:
+        return getRoute(widget: const SplashScreen());
       case RouteHelper.login:
         return getRoute(widget: const LogInScreen());
 

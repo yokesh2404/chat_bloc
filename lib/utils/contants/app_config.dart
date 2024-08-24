@@ -1,0 +1,3 @@
+class AppConfig {
+  AppConfig._();
+}

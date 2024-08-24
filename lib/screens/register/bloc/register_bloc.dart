@@ -32,7 +32,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           Map request = {
             "name": event.userName,
             "email": event.email,
-            "status": "created"
+            "status": "created",
+            "profile": "",
+            "about": ""
           };
           await FirebaseStorageService.getInstance
               .storeUserDetails(userData: credential, request: request);

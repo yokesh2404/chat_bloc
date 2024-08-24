@@ -70,6 +70,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Row(
                             children: [
                               GestureDetector(
+                                onTap: () {
+                                  NavigationHelper.pop();
+                                },
                                 child: const Icon(
                                   Icons.arrow_back_ios_new,
                                   color: AppColors.white,

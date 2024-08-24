@@ -26,4 +26,30 @@ class FirebaseStorageService {
       showToast(message: e.toString());
     }
   }
+
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>?>? searchUser(
+      String name) async {
+    try {
+      var data = await _firestore
+          .collection(_userCollection)
+          .where("name", isEqualTo: name)
+          .get();
+      return data.docs;
+    } catch (e) {
+      showToast(message: e.toString());
+    }
+    return null;
+  }
+
+  getAllUser() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firestore.collection(_userCollection).get();
+
+      return querySnapshot.docs;
+    } catch (e) {
+      showToast(message: e.toString());
+    }
+    return null;
+  }
 }

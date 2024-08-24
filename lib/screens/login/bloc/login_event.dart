@@ -11,6 +11,12 @@ class NavigateToForgotPassword extends LoginEvent {}
 
 class ShowPasswordEvent extends LoginEvent {}
 
+class GoogleSigninEvent extends LoginEvent {
+  final BuildContext context;
+
+  GoogleSigninEvent({required this.context});
+}
+
 class SumbitLogin extends LoginEvent {
   final String email;
   final String password;

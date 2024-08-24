@@ -15,6 +15,7 @@ class AppTextFormField extends StatelessWidget {
     this.onEditingComplete,
     this.autofocus,
     this.focusNode,
+    this.decoration,
   });
 
   final void Function(String)? onChanged;
@@ -28,6 +29,7 @@ class AppTextFormField extends StatelessWidget {
   final bool? autofocus;
   final FocusNode? focusNode;
   final void Function()? onEditingComplete;
+  final InputDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +46,16 @@ class AppTextFormField extends StatelessWidget {
         obscureText: obscureText ?? false,
         obscuringCharacter: '*',
         onEditingComplete: onEditingComplete,
-        decoration: InputDecoration(
-          suffixIcon: suffixIcon,
-          labelText: labelText,
-          labelStyle: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: AppColors.black),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-        ),
+        decoration: decoration ??
+            InputDecoration(
+              suffixIcon: suffixIcon,
+              labelText: labelText,
+              labelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: AppColors.black),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         style: const TextStyle(
           fontWeight: FontWeight.w500,
