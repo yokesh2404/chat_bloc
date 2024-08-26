@@ -4,7 +4,13 @@ part of 'home_bloc.dart';
 sealed class HomeEvent {}
 
 class GetAllUsersEvent extends HomeEvent {
-  final String searchtext;
+  final List<UserProfile> allUsers;
 
-  GetAllUsersEvent({required this.searchtext});
+  GetAllUsersEvent(this.allUsers);
+}
+
+class NavigateToChat extends HomeEvent {
+  final UserProfile userProfile;
+
+  NavigateToChat({required this.userProfile});
 }

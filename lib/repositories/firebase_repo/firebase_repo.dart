@@ -5,11 +5,14 @@ import 'package:state_management/utils/helper/tost_helper.dart';
 class FirebaseAuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
+  User? userDetails;
+
   Future<User?> signUpWithEmailAndPassword(
       String email, String password) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      userDetails = credential.user;
       return credential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -26,6 +29,7 @@ class FirebaseAuthService {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      userDetails = credential.user;
       return credential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {

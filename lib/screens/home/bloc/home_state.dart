@@ -8,7 +8,7 @@ final class HomeInitial extends HomeState {}
 class HomeLoadingState extends HomeState {}
 
 class UserFetchedState extends HomeState {
-  final List<QueryDocumentSnapshot<Map<String, dynamic>>> users;
+  final List<UserProfile> users;
 
   UserFetchedState({required this.users});
 }

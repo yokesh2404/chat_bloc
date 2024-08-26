@@ -19,6 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   bool isSuccess = false;
   bool isShowPassword = false;
   final FirebaseAuthService _authService;
+  User? currentUser;
   LoginBloc(this._authService) : super(LoginInitial()) {
     on<LoginInitialEvent>((event, emit) {});
 
@@ -54,7 +55,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           event.email, event.password);
       AppDialogs.getInstance.dismissLoader(event.context);
       if (user != null) {
-        emit(LoginSuccess());
+        currentUser = user;
+        emit(LoginSuccess(currentUser: user));
         await DependencyInjection()
             .getIt<SharedPrefController>()
             .setStringData(key: SharedPrefKeys.userId, data: user.uid);
@@ -73,7 +75,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       User? user = await _authService.signInWithGoogle();
       AppDialogs.getInstance.dismissLoader(event.context);
       if (user != null) {
-        emit(LoginSuccess());
+        currentUser = user;
+        emit(LoginSuccess(currentUser: user));
         await DependencyInjection()
             .getIt<SharedPrefController>()
             .setStringData(key: SharedPrefKeys.userId, data: user.uid);

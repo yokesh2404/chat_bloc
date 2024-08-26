@@ -30,11 +30,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         AppDialogs.getInstance.dismissLoader(event.context);
         if (credential != null) {
           Map request = {
-            "name": event.userName,
+            "name": event.userName.toLowerCase(),
             "email": event.email,
             "status": "created",
             "profile": "",
-            "about": ""
+            "about": "",
+            "userId": credential.uid
           };
           await FirebaseStorageService.getInstance
               .storeUserDetails(userData: credential, request: request);

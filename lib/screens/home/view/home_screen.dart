@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:state_management/components/app_text_field.dart';
 import 'package:state_management/repositories/firebase_repo/firebase_storage_repo.dart';
 import 'package:state_management/screens/home/bloc/home_bloc.dart';
+import 'package:state_management/screens/register/model/user_details_model.dart';
 import 'package:state_management/utils/contants/app_colors.dart';
 import 'package:state_management/utils/contants/app_sizes.dart';
 import 'package:state_management/utils/contants/app_strings.dart';
@@ -20,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
+
+  FirebaseStorageService firebaseStorageService = FirebaseStorageService();
 
   @override
   Widget build(BuildContext context) {
@@ -42,77 +46,47 @@ class _HomeScreenState extends State<HomeScreen> {
             var homeBloc = context.read<HomeBloc>();
             return SingleChildScrollView(
               padding: const EdgeInsets.all(AppSizes.size_12),
-              child: Column(
-                children: [
-                  AppTextFormField(
-                      onChanged: (p0) {
-                        context.read<HomeBloc>().add(GetAllUsersEvent(
-                            searchtext: searchController.text));
-                      },
-                      decoration: InputDecoration(
-                        labelText: "",
-                        hintText: AppStrings.searchUser,
-                        hintStyle: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(color: AppColors.black),
-                        suffixIcon: GestureDetector(
-                          onTap: () async {
-                            context.read<HomeBloc>().add(GetAllUsersEvent(
-                                searchtext: searchController.text));
-                          },
-                          child: const Icon(
-                            Icons.search,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        labelStyle: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(color: AppColors.black),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      textInputAction: TextInputAction.done,
-                      labelText: AppStrings.searchUser,
-                      keyboardType: TextInputType.emailAddress,
-                      controller: searchController),
-                  if (state is HomeLoadingState) ...[
-                    const Center(
-                      child: CustomLoader(),
-                    )
-                  ] else if (state is UserFetchedState) ...[
-                    ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  child: Icon(Icons.headphones),
-                                  backgroundColor: AppColors.borderPrimary,
-                                ),
-                                SizedBox(
-                                  width: AppSizes.width_06,
-                                ),
-                                Text("${homeBloc.users[index].get("name")}")
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: AppSizes.size_12,
-                          );
-                        },
-                        itemCount: homeBloc.users.length)
-                  ] else if (state is UserFetchedError) ...[
-                    const Text("error")
-                  ] else ...[
-                    const SizedBox()
-                  ]
-                ],
-              ),
+              child: StreamBuilder<List<UserProfile>>(
+                  stream: firebaseStorageService.getAllUserStream(),
+                  builder: (context, snapshot) {
+                    return Column(
+                      children: [
+                        if (snapshot.hasData)
+                          ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    homeBloc.add(NavigateToChat(
+                                        userProfile: snapshot.data![index]));
+                                  },
+                                  child: Container(
+                                    child: Row(
+                                      children: [
+                                        const CircleAvatar(
+                                          backgroundColor:
+                                              AppColors.borderPrimary,
+                                          child: Icon(Icons.headphones),
+                                        ),
+                                        const SizedBox(
+                                          width: AppSizes.width_06,
+                                        ),
+                                        Text("${snapshot.data![index].name}")
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: AppSizes.size_12,
+                                );
+                              },
+                              itemCount: snapshot.data!.length)
+                      ],
+                    );
+                  }),
             );
           },
           listener: (context, state) {},

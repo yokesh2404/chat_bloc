@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:state_management/screens/chat/view/chat_screen.dart';
 import 'package:state_management/screens/home/view/home_screen.dart';
 import 'package:state_management/screens/login/view/log_in_screen.dart';
+import 'package:state_management/screens/register/model/user_details_model.dart';
 import 'package:state_management/screens/register/view/register_screen.dart';
 import 'package:state_management/screens/splash/view/splash_screen.dart';
 import 'package:state_management/utils/helper/route_helper.dart';
@@ -30,6 +32,11 @@ class Routes {
         return getRoute(widget: const RegisterScreen());
       case RouteHelper.home:
         return getRoute(widget: const HomeScreen());
+      case RouteHelper.chat:
+        return getRoute(
+            widget: ChatScreen(
+          userProfile: settings.arguments as UserProfile,
+        ));
 
       /// An invalid route. User shouldn't see this,
       /// it's for debugging purpose only.
