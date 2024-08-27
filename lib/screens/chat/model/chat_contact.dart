@@ -1,15 +1,19 @@
+import 'package:state_management/screens/register/model/user_details_model.dart';
+
 class ChatContact {
   final String name;
   final String profilePic;
   final String contactId;
   final DateTime timeSent;
   final String lastMessage;
+  final UserProfile? userProfile;
   ChatContact({
     required this.name,
     required this.profilePic,
     required this.contactId,
     required this.timeSent,
     required this.lastMessage,
+    this.userProfile,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,6 +23,7 @@ class ChatContact {
       'contactId': contactId,
       'timeSent': timeSent.millisecondsSinceEpoch,
       'lastMessage': lastMessage,
+      'userProfile': userProfile
     };
   }
 
@@ -29,6 +34,7 @@ class ChatContact {
       contactId: map['contactId'] ?? '',
       timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
       lastMessage: map['lastMessage'] ?? '',
+      userProfile: map['userProfile'],
     );
   }
 }

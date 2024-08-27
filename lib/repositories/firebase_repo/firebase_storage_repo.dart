@@ -120,6 +120,40 @@ class FirebaseStorageService {
             .toList());
   }
 
+  Stream<List<ChatContact>> getAllChatUserStream() async* {
+    var userId = await DependencyInjection()
+        .getIt<SharedPrefController>()
+        .getStringData(key: SharedPrefKeys.userId);
+    print(userId);
+    yield* _firestore
+        .collection(_userCollection)
+        .doc(userId)
+        .collection('chats')
+        .snapshots()
+        .asyncMap((event) async {
+      List<ChatContact> contacts = [];
+      for (var document in event.docs) {
+        var chatContact = ChatContact.fromMap(document.data());
+        print(chatContact);
+        var userData =
+            await _firestore.collection(_userCollection).doc(document.id).get();
+        var user = UserProfile.fromJson(userData.data()!);
+
+        contacts.add(
+          ChatContact(
+            name: user.name ?? "",
+            profilePic: user.profile ?? "",
+            contactId: chatContact.contactId,
+            timeSent: chatContact.timeSent,
+            lastMessage: chatContact.lastMessage,
+            userProfile: user,
+          ),
+        );
+      }
+      return contacts;
+    });
+  }
+
   void _saveDataToContactsSubcollection(
     UserProfile senderUserData,
     UserProfile? recieverUserData,
@@ -136,12 +170,12 @@ class FirebaseStorageService {
     } else {
 // users -> reciever user id => chats -> current user id -> set data
       var recieverChatContact = ChatContact(
-        name: recieverUserData!.name ?? "",
-        profilePic: recieverUserData.profile ?? "",
-        contactId: recieverUserData.userId ?? "",
-        timeSent: timeSent,
-        lastMessage: text,
-      );
+          name: recieverUserData!.name ?? "",
+          profilePic: recieverUserData.profile ?? "",
+          contactId: recieverUserData.userId ?? "",
+          timeSent: timeSent,
+          lastMessage: text,
+          userProfile: recieverUserData);
       await _firestore
           .collection(_userCollection)
           .doc(recieverUserId)
@@ -157,6 +191,7 @@ class FirebaseStorageService {
         contactId: senderUserData.userId ?? "",
         timeSent: timeSent,
         lastMessage: text,
+        userProfile: senderUserData,
       );
       await _firestore
           .collection(_userCollection)

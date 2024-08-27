@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:state_management/components/app_text_field.dart';
 import 'package:state_management/repositories/firebase_repo/firebase_storage_repo.dart';
+import 'package:state_management/screens/chat/model/chat_contact.dart';
 import 'package:state_management/screens/home/bloc/home_bloc.dart';
 import 'package:state_management/screens/register/model/user_details_model.dart';
 import 'package:state_management/utils/contants/app_colors.dart';
@@ -46,8 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
             var homeBloc = context.read<HomeBloc>();
             return SingleChildScrollView(
               padding: const EdgeInsets.all(AppSizes.size_12),
-              child: StreamBuilder<List<UserProfile>>(
-                  stream: firebaseStorageService.getAllUserStream(),
+              child: StreamBuilder(
+                  stream: firebaseStorageService.getAllChatUserStream(),
                   builder: (context, snapshot) {
                     return Column(
                       children: [
@@ -59,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return GestureDetector(
                                   onTap: () {
                                     homeBloc.add(NavigateToChat(
-                                        userProfile: snapshot.data![index]));
+                                        userProfile: snapshot
+                                            .data![index].userProfile!));
                                   },
                                   child: Container(
                                     child: Row(

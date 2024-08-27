@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:state_management/components/app_text_field.dart';
 import 'package:state_management/components/box_decorations.dart';
@@ -25,9 +26,29 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController chatController = TextEditingController();
 
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // _scrollToEnd();
+    });
+  }
+
+  // void _scrollToEnd() {
+  //   // Scroll to the maximum scroll extent (bottom of the content)
+  //   _scrollController.animateTo(
+  //     _scrollController.position.maxScrollExtent,
+  //     duration: const Duration(milliseconds: 300),
+  //     curve: Curves.easeOut,
+  //   );
+  // }
+
   @override
   void dispose() {
     chatController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -48,15 +69,20 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Expanded(
                     child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: StreamBuilder<List<Message>>(
                     stream: FirebaseStorageService()
                         .getChatStream(widget.userProfile.userId ?? ""),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Text("data");
+                        return const SizedBox();
                       } else if (snapshot.connectionState ==
                               ConnectionState.active &&
                           snapshot.hasData) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          _scrollController.jumpTo(
+                              _scrollController.position.maxScrollExtent);
+                        });
                         return ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -67,12 +93,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                     bottom: 4,
                                     left: snapshot.data![index].recieverid ==
                                             widget.userProfile.userId
-                                        ? 25
-                                        : 0,
+                                        ? 12
+                                        : 12,
                                     right: snapshot.data![index].recieverid ==
                                             widget.userProfile.userId
-                                        ? 0
-                                        : 25),
+                                        ? 12
+                                        : 12),
                                 alignment: snapshot.data![index].recieverid ==
                                         widget.userProfile.userId
                                     ? Alignment.centerRight
@@ -80,22 +106,22 @@ class _ChatScreenState extends State<ChatScreen> {
                                 child: Container(
                                   margin: snapshot.data![index].recieverid ==
                                           widget.userProfile.userId
-                                      ? EdgeInsets.only(
+                                      ? const EdgeInsets.only(
                                           left: 30,
                                         )
-                                      : EdgeInsets.only(right: 30),
-                                  padding: EdgeInsets.only(
-                                      top: 17, bottom: 17, left: 20, right: 20),
+                                      : const EdgeInsets.only(right: 30),
+                                  padding: const EdgeInsets.only(
+                                      top: 6, bottom: 6, left: 20, right: 20),
                                   decoration: BoxDecoration(
                                       borderRadius: snapshot
                                                   .data![index].recieverid ==
                                               widget.userProfile.userId
-                                          ? BorderRadius.only(
+                                          ? const BorderRadius.only(
                                               topLeft: Radius.circular(20),
                                               topRight: Radius.circular(20),
                                               bottomLeft: Radius.circular(20),
                                             )
-                                          : BorderRadius.only(
+                                          : const BorderRadius.only(
                                               topLeft: Radius.circular(20),
                                               topRight: Radius.circular(20),
                                               bottomRight: Radius.circular(20),
@@ -122,7 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         // ),
                                         Text(
                                           snapshot.data![index].text ?? "",
-                                          textAlign: TextAlign.center,
+                                          textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyLarge!
@@ -133,13 +159,13 @@ class _ChatScreenState extends State<ChatScreen> {
                               );
                             },
                             separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: AppSizes.height_12,
+                              return const SizedBox(
+                                height: 2,
                               );
                             },
                             itemCount: snapshot.data!.length);
                       } else {
-                        return SizedBox();
+                        return const SizedBox();
                       }
                     },
                   ),
@@ -158,6 +184,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 message: chatController.text,
                                 messageType: MessageEnum.text));
                             chatController.clear();
+                            // FocusScope.of(context).unfocus();
                           }
                         },
                         child: const Icon(
