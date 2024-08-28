@@ -1,2 +1,2 @@
-# shop_app
-E-Commerce application node with express js and mongo db
+# chat_app
+Chat application using firebase,bloc
