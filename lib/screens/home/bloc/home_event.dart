@@ -14,3 +14,5 @@ class NavigateToChat extends HomeEvent {
 
   NavigateToChat({required this.userProfile});
 }
+
+class NavigateToSearchUser extends HomeEvent {}

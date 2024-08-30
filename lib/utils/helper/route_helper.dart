@@ -6,4 +6,5 @@ class RouteHelper {
   static const String register = '/register';
   static const String home = '/home';
   static const String chat = '/chat';
+  static const String searchUser = '/searchUser';
 }

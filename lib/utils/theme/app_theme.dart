@@ -41,7 +41,7 @@ class AppTheme {
       fontFamily: 'Montserrat',
       brightness: Brightness.dark,
       primaryColor: AppColors.primaryColor,
-      scaffoldBackgroundColor: AppColors.appBackgroundColor,
+      scaffoldBackgroundColor: AppColors.black,
       cardColor: AppColors.black,
       textTheme: AppTextTheme.darkTextTheme,
       chipTheme: AppChipTheme.darkChipTheme,

@@ -50,17 +50,11 @@ class AppTextFormField extends StatelessWidget {
             InputDecoration(
               suffixIcon: suffixIcon,
               labelText: labelText,
-              labelStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(color: AppColors.black),
+              labelStyle: Theme.of(context).textTheme.bodyLarge,
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
-        style: const TextStyle(
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
-        ),
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
     );
   }

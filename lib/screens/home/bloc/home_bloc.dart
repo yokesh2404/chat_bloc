@@ -19,27 +19,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       NavigationHelper.pushNamed(RouteHelper.chat,
           arguments: event.userProfile);
     });
-    // on<GetAllUsersEvent>(_getAllUser);
+    on<NavigateToSearchUser>((event, emit) {
+      NavigationHelper.pushNamed(RouteHelper.searchUser);
+    });
   }
-
-  // Stream<QuerySnapshot<UserProfile>> _getAllUser(
-  //     GetAllUsersEvent event, Emitter emit) {
-  //   return firebaseStorageService.getAllUser();
-  // }
-
-  // _getUser(GetAllUsersEvent event, Emitter emit) async {
-  //   emit(HomeLoadingState());
-  //   var data = await firebaseStorageService.searchUser(event.searchtext);
-
-  //   if (data != null && data.isNotEmpty) {
-  //     users = [];
-  //     users.addAll(data);
-  //     emit(UserFetchedState(users: users));
-  //   } else if (data != null && data.isEmpty) {
-  //     users = [];
-  //     emit(UserFetchedState(users: users));
-  //   } else {
-  //     emit(UserFetchedError());
-  //   }
-  // }
 }

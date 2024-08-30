@@ -11,6 +11,7 @@ import 'package:state_management/screens/register/model/user_details_model.dart'
 import 'package:state_management/utils/contants/app_colors.dart';
 import 'package:state_management/utils/contants/app_enums.dart';
 import 'package:state_management/utils/contants/app_sizes.dart';
+import 'package:state_management/utils/helper/encrypt_helper.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.userProfile});
@@ -147,7 +148,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                         //   height: 8,
                                         // ),
                                         Text(
-                                          snapshot.data![index].text ?? "",
+                                          EncryptHelper.decryptAES(
+                                              snapshot.data![index].text ?? ""),
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme

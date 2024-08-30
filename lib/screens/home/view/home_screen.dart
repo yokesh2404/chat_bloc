@@ -9,6 +9,8 @@ import 'package:state_management/screens/register/model/user_details_model.dart'
 import 'package:state_management/utils/contants/app_colors.dart';
 import 'package:state_management/utils/contants/app_sizes.dart';
 import 'package:state_management/utils/contants/app_strings.dart';
+import 'package:state_management/utils/helper/navigation_helper.dart';
+import 'package:state_management/utils/helper/route_helper.dart';
 import 'package:state_management/widgets/button_widget.dart';
 import 'package:state_management/widgets/custom_loader.dart';
 
@@ -28,21 +30,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.darkBlue,
-        automaticallyImplyLeading: false,
-        title: Text(
-          AppStrings.homeHeader,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontSize: AppSizes.size_18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.white),
+    return BlocProvider<HomeBloc>(
+      create: (context) => HomeBloc(FirebaseStorageService()),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.darkBlue,
+          automaticallyImplyLeading: false,
+          title: Text(
+            AppStrings.homeHeader,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: AppSizes.size_18,
+                fontWeight: FontWeight.w600,
+                color: AppColors.white),
+          ),
         ),
-      ),
-      body: BlocProvider(
-        create: (context) => HomeBloc(FirebaseStorageService()),
-        child: BlocConsumer<HomeBloc, HomeState>(
+        body: BlocConsumer<HomeBloc, HomeState>(
           builder: (context, state) {
             var homeBloc = context.read<HomeBloc>();
             return SingleChildScrollView(
@@ -92,6 +94,17 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
           listener: (context, state) {},
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // context.read<HomeBloc>().add(NavigateToSearchUser());
+            NavigationHelper.pushNamed(RouteHelper.searchUser);
+          },
+          backgroundColor: AppColors.darkBlue,
+          child: const Icon(
+            Icons.message,
+            color: AppColors.white,
+          ),
         ),
       ),
     );

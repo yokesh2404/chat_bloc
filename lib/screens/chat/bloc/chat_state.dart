@@ -10,6 +10,8 @@ class ChatInitialState extends ChatState {
   ChatInitialState({required this.currentUser});
 }
 
+class ChatLoading extends ChatState {}
+
 class ChatsList extends ChatState {
   final List<Message> messages;
 

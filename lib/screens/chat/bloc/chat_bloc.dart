@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:state_management/di.dart';
@@ -7,6 +9,9 @@ import 'package:state_management/screens/login/bloc/login_bloc.dart';
 import 'package:state_management/screens/register/model/user_details_model.dart';
 import 'package:state_management/utils/contants/app_enums.dart';
 import 'package:state_management/utils/contants/shared_pref_keys.dart';
+import 'package:state_management/utils/helper/encrypt_helper.dart';
+import 'package:state_management/utils/helper/navigation_helper.dart';
+import 'package:state_management/utils/helper/route_helper.dart';
 import 'package:state_management/utils/helper/shared_pref_controller.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,8 +24,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   DependencyInjection di = DependencyInjection();
 
   UserProfile currentUser = UserProfile();
-  List<Message> messages = [];
+  StreamSubscription<List<Message>>? _subscription;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  // StreamSubscription? _subscription;
   ChatBloc() : super(ChatInitial()) {
     on<GetChatListEvent>((event, emit) async {});
 
@@ -32,11 +38,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       var userData = await di.getIt<FirebaseStorageService>().getUser(userId);
       currentUser = userData!;
       di.getIt<FirebaseStorageService>().sendTextMessage(
-          text: event.message,
+          text: EncryptHelper.encryptAES(event.message),
           recieverUserId: event.receiverDetails.userId ?? "",
           senderUser: userData,
           receiverDetails: event.receiverDetails,
           isGroupChat: false);
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _subscription?.cancel();
+
+    return super.close();
   }
 }
