@@ -16,9 +16,7 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
   List<UserProfile> allUsers = [];
   StreamSubscription? _subscription;
   SearchUsersBloc(this.repository) : super(SearchUsersInitial()) {
-    on<SearchUsersEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<SearchUsersEvent>((event, emit) {});
 
     on<FetchUsersEvent>(_onLoadUsers);
   }
