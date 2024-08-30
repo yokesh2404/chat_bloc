@@ -12,6 +12,7 @@ import 'package:state_management/utils/contants/app_colors.dart';
 import 'package:state_management/utils/contants/app_enums.dart';
 import 'package:state_management/utils/contants/app_sizes.dart';
 import 'package:state_management/utils/helper/encrypt_helper.dart';
+import 'package:state_management/utils/helper/functions_helper.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.userProfile});
@@ -58,7 +59,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.darkBlue,
-        title: Text(widget.userProfile.name ?? ""),
+        title: Text(FunctionsHelper.getInstance
+            .capitalizeString(widget.userProfile.name ?? "")),
       ),
       body: BlocProvider(
         create: (context) => ChatBloc(),

@@ -9,6 +9,7 @@ import 'package:state_management/screens/register/model/user_details_model.dart'
 import 'package:state_management/utils/contants/app_colors.dart';
 import 'package:state_management/utils/contants/app_sizes.dart';
 import 'package:state_management/utils/contants/app_strings.dart';
+import 'package:state_management/utils/helper/functions_helper.dart';
 import 'package:state_management/utils/helper/navigation_helper.dart';
 import 'package:state_management/utils/helper/route_helper.dart';
 import 'package:state_management/widgets/button_widget.dart';
@@ -68,15 +69,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Container(
                                     child: Row(
                                       children: [
-                                        const CircleAvatar(
+                                        CircleAvatar(
                                           backgroundColor:
                                               AppColors.borderPrimary,
-                                          child: Icon(Icons.headphones),
+                                          child: snapshot.data![index]
+                                                  .profilePic.isNotEmpty
+                                              ? Image.network(snapshot
+                                                  .data![index].profilePic)
+                                              : const Icon(Icons.person),
                                         ),
                                         const SizedBox(
                                           width: AppSizes.width_06,
                                         ),
-                                        Text("${snapshot.data![index].name}")
+                                        Text(FunctionsHelper.getInstance
+                                            .capitalizeString(
+                                                snapshot.data![index].name))
                                       ],
                                     ),
                                   ),

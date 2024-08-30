@@ -4,7 +4,7 @@ class ChatContact {
   final String name;
   final String profilePic;
   final String contactId;
-  final DateTime timeSent;
+  final int timeSent;
   final String lastMessage;
   final UserProfile? userProfile;
   ChatContact({
@@ -17,14 +17,16 @@ class ChatContact {
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'profilePic': profilePic,
-      'contactId': contactId,
-      'timeSent': timeSent.millisecondsSinceEpoch,
-      'lastMessage': lastMessage,
-      'userProfile': userProfile
-    };
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['profilePic'] = profilePic;
+    data['contactId'] = contactId;
+    data['timeSent'] = timeSent;
+    data['lastMessage'] = lastMessage;
+    if (userProfile != null) {
+      data['userProfile'] = userProfile!.toJson();
+    }
+    return data;
   }
 
   factory ChatContact.fromMap(Map<String, dynamic> map) {
@@ -32,9 +34,11 @@ class ChatContact {
       name: map['name'] ?? '',
       profilePic: map['profilePic'] ?? '',
       contactId: map['contactId'] ?? '',
-      timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
+      timeSent: map['timeSent'] ?? 0,
       lastMessage: map['lastMessage'] ?? '',
-      userProfile: map['userProfile'],
+      userProfile: map['userProfile'] != null
+          ? new UserProfile.fromJson(map['userProfile'])
+          : null,
     );
   }
 }

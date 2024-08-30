@@ -13,6 +13,12 @@ class FetchUsersState extends SearchUsersState {
   FetchUsersState({required this.usersList});
 }
 
+class FetchAllUsers extends SearchUsersState {
+  final List<UserProfile> allUsers;
+
+  FetchAllUsers({required this.allUsers});
+}
+
 class UsersLoaded extends SearchUsersState {}
 
 class ErrorState extends SearchUsersState {

@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:state_management/di.dart';
+import 'package:state_management/repositories/firebase_repo/firebase_storage_repo.dart';
+import 'package:state_management/screens/register/model/user_details_model.dart';
 import 'package:state_management/screens/search/model/api_response.dart';
 import 'package:state_management/utils/network/api_client.dart';
 import 'package:state_management/utils/network/api_repo.dart';
@@ -23,5 +26,11 @@ class SearchUserRepo {
     } catch (e) {
       return list;
     }
+  }
+
+  Stream<List<UserProfile>> getAllUsers() async* {
+    yield* DependencyInjection()
+        .getIt<FirebaseStorageService>()
+        .getAllUserStream();
   }
 }

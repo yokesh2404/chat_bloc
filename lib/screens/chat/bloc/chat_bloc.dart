@@ -36,6 +36,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .getStringData(key: SharedPrefKeys.userId);
 
       var userData = await di.getIt<FirebaseStorageService>().getUser(userId);
+      print(event.receiverDetails);
       currentUser = userData!;
       di.getIt<FirebaseStorageService>().sendTextMessage(
           text: EncryptHelper.encryptAES(event.message),
